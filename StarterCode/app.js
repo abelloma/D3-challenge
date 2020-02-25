@@ -181,24 +181,25 @@ d3.csv("data.csv").then(function(healthData, err) {
     .call(leftAxis);
 
   // append initial circles
-  var circlesGroup = chartGroup.selectAll("circle")
+  // add a variable for the circle with and enter and and then select and append so the data is only once
+  // Define the data for the circles + text
+  var circles = chartGroup.selectAll("g circle")
     .data(healthData)
     .enter()
-    .append("circle")
+    .append("g");
+
+  var circlesGroup = circles.append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d[chosenYAxis]))
     .attr("r", 20)
     .classed("stateCircle", true)
     .attr("opacity", ".5");
 
-  var txtGroup = chartGroup.selectAll("text")
-    .data(healthData)
-    .enter()
-    .append("text")
+  var txtGroup = circles.append("text")
     .text(d => d.abbr)
     .style("font-size", "10px")
     .attr("x", d=>xLinearScale(d[chosenXAxis]))
-    .attr("y", d=>yLinearScale(d[chosenYAxis])+5)
+    .attr("y", d=>yLinearScale(d[chosenYAxis]))
     .classed("stateText", true)
     .style("font-weight", "800")
 
